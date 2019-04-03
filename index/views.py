@@ -1,21 +1,17 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+
 from index.models import Product
 from django.views.generic import ListView
+from .form import *
 
 
 # Create your views here.
 
 
 def index(request):
-    type_list = Product.objects.values('type').distinct()
-    name_list = Product.objects.values('name', 'type')
-    # context = {
-    #     'title': '首页',
-    #     'type_list': type_list,
-    #     'name_list': name_list,
-    # }
-    return render(request, 'index.html', context=locals())
+    product = ProductForm()
+    return render(request, 'data_form.html', context=locals())
 
 
 def mydate(request, year, month, day):
@@ -33,5 +29,5 @@ class ProductList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['name_list'] = Product.objects.values('name','type')
+        context['name_list'] = Product.objects.values('name', 'type')
         return context
